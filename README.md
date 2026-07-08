@@ -1,28 +1,95 @@
-# Ex-Umbris-Fabricati
-A narrative-driven terminal RPG inspired by cooperative military science fiction.
+# Ex Umbris Fabricati
 
-Choose one of ten unique classes.
+> **Forged in Shadow. Sealed in Flame.**
 
-Deploy alongside the Sanctum.
+Ex Umbris Fabricati is a narrative-driven terminal RPG inspired by cooperative military science fiction.
 
-Forge your legend.
+Take up the mantle of a Sanctum operative, choose from one of ten unique classes, and deploy on dangerous operations where every decision shapes your story.
 
-## Current Status
+---
 
-🚧 Early Prototype (v0.1)
+## Download
+
+The latest Windows build is available from the **Releases** section of this repository.
+
+---
 
 ## Features
 
 - 10 unique playable classes
 - Class-specific narrative responses
-- Multiple branching decisions
+- Branching story paths
+- Multiple mission outcomes
 - Standalone Windows executable
 - Built entirely in Python
 
+---
+
+## Current Status
+
+🚧 **Early Prototype (v0.1)**
+
+Current content includes:
+
+- Introductory cinematic
+- Sanctum registration
+- Mission 01
+- Multiple branching choices
+- Class-specific dialogue
+
+---
+
+## Development
+
+Clone the repository:
+
+```bash
+git clone https://github.com/BigThunderForgeworks/Ex-Umbris-Fabricati.git
+cd Ex-Umbris-Fabricati
+```
+
+Run the game:
+
+```bash
+python main.py
+```
+
+---
+
 ## Roadmap
 
-- Save system
-- Codex
-- Voice narration
-- Dynamic missions
-- Pygame version?
+### Version 0.2
+- Improved title screen
+- Additional ASCII artwork
+- More dynamic narrative pacing
+
+### Version 0.3
+- Save & Continue
+- Codex system
+- Unlockable medals
+- Expanded mission outcomes
+
+### Version 0.4
+- Optional voice narration
+- Dynamic battlefield events
+- Additional missions
+
+### Future
+- Full campaign
+- Pygame adaptation
+- Additional classes
+- Community-driven story expansions
+
+---
+
+## Feedback
+
+This project is actively under development.
+
+If you encounter bugs, have ideas for new features, or simply want to share your experience, please open an Issue or start a Discussion on GitHub.
+
+Every piece of feedback helps improve the Sanctum.
+
+---
+
+Developed by **Big Thunder Forgeworks**

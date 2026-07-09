@@ -58,10 +58,15 @@ python main.py
 
 ## Roadmap
 
+### Version 0.1.2
+- Improved Logo for Studio
+- Improved spacing in text
+  
 ### Version 0.2
-- Improved title screen
+- Title screen
 - Additional ASCII artwork
 - More dynamic narrative pacing
+- Include Mission 02-05
 
 ### Version 0.3
 - Save & Continue

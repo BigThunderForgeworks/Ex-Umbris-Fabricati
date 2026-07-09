@@ -99,6 +99,14 @@ def section_header(text):
     say("──────────────────────────────────────────────", 0.5)
     blank()
 
+def print_art(art, delay=1):
+    print(art)
+    pause(delay)
+
+def reveal_art(art, line_delay=0.25):
+    for line in art.splitlines():
+        print(line)
+        pause(line_delay)
 
 # ------------------------------------------------------------
 # Input Helpers

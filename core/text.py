@@ -55,7 +55,7 @@ def typewriter(text="", speed=NARRATION_SPEED, delay=1.5):
 
 
 # ------------------------------------------------------------
-# Voice / Style Functions
+# Voice / Style Functions -- this is a later feature/not implemented yet
 # ------------------------------------------------------------
 
 def narrate(text="", delay=1.5):
@@ -75,7 +75,7 @@ def marshal(text="", delay=2.0):
 
 
 # ------------------------------------------------------------
-# Formatting Helpers
+# Formatting Helpers -- need to add in the logo for BTF
 # ------------------------------------------------------------
 
 def divider(delay=1):

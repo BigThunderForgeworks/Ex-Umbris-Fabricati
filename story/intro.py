@@ -10,14 +10,23 @@ from assets.ascii import BTF_LOGO
 
 def opening():
     computer("[FORGE ONLINE]", delay=1)
+    
+    blank()
+
     reveal_art(BTF_LOGO, line_delay=0.8)
-    say("presents", delay=1.5)
+
+    blank()
+
+    say("            presents", delay=1.5)
+
+    blank()
 
     title_card(
         "EX UMBRIS FABRICATI",
         "Forged in Shadow. Sealed in Flame."
     )  
 
+    blank()
 
     narrate("Before your story can be told...")
     narrate("...you must first understand ours.", delay=2.5)

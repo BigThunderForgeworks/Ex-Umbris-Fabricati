@@ -73,6 +73,10 @@ def radio(text="", delay=1.0):
 def marshal(text="", delay=2.0):
     typewriter(text, speed=MARSHAL_SPEED, delay=delay)
 
+def npc(name, text, delay=1.5):
+    print(f"{name}: \"{text}\"")
+    pause(delay)
+
 
 # ------------------------------------------------------------
 # Formatting Helpers -- need to add in the logo for BTF

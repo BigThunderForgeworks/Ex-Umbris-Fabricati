@@ -27,11 +27,12 @@ The latest Windows build is available from the **Releases** section of this repo
 
 ## Current Status
 
-🚧 **Early Prototype (v0.1)**
+🚧 **Early Prototype (v0.2)**
 
 Current content includes:
 
 - Introductory cinematic
+- Prologue with visitable sections and characters to interact with
 - Sanctum registration
 - Mission 01
 - Multiple branching choices
@@ -58,14 +59,14 @@ python main.py
 
 ## Roadmap
 
-### Version 0.1.2
+### Version 0.1.2 -- COMPLETE
 - Improved Logo for Studio
 - Improved spacing in text
   
 ### Version 0.2
 - Title screen
-- Additional ASCII artwork
-- More dynamic narrative pacing
+- Additional ASCII artwork - COMPLETE
+- More dynamic narrative pacing - COMPLETE
 - Include Mission 02-05
 
 ### Version 0.3

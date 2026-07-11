@@ -99,3 +99,4 @@ Every piece of feedback helps improve the Sanctum.
 ---
 
 Developed by **Big Thunder Forgeworks**
+All rights and everything referenced from Helldivers 2 belongs to Arrowhead. This is just a fun project inspired by our gameplay in there

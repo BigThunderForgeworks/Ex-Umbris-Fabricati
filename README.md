@@ -2,9 +2,9 @@
 
 > **Forged in Shadow. Sealed in Flame.**
 
-Ex Umbris Fabricati is a narrative-driven terminal RPG inspired by cooperative military science fiction.
+Ex Umbris Fabricati is a narrative-driven terminal RPG inspired by cooperative military science fiction and the world of Helldivers.
 
-Take up the mantle of a Sanctum operative, choose from one of ten unique classes, and deploy on dangerous operations where every decision shapes your story.
+Awaken aboard the **Spear of Tartarus**, join the Sanctum of **Ex Umbris Fabricati**, choose one of ten unique classes, and deploy on dangerous operations where every decision helps shape your legend.
 
 ---
 
@@ -17,9 +17,12 @@ The latest Windows build is available from the **Releases** section of this repo
 ## Features
 
 - 10 unique playable classes
-- Class-specific narrative responses
-- Branching story paths
-- Multiple mission outcomes
+- Fully explorable carrier hub
+- Class-specific dialogue and interactions
+- Five connected missions
+- Branching narrative decisions
+- Multiple NPCs with unique personalities
+- Cinematic typewriter presentation
 - Standalone Windows executable
 - Built entirely in Python
 
@@ -27,16 +30,25 @@ The latest Windows build is available from the **Releases** section of this repo
 
 ## Current Status
 
-🚧 **Early Prototype (v0.2)**
+🚧 **Version 1.0 Alpha**
 
 Current content includes:
 
-- Introductory cinematic
-- Prologue with visitable sections and characters to interact with
+- Cinematic opening
 - Sanctum registration
-- Mission 01
-- Multiple branching choices
+- Character creation
+- 10 playable classes
+- Fully explorable carrier hub
+    - Hall of Embers
+    - Mission Planning
+    - Armory
+    - Med Bay
+    - Hangar Bay
+    - Mission Deck
+- Five connected missions
 - Class-specific dialogue
+- Multiple branching choices
+- Complete beginning-to-end playthrough
 
 ---
 
@@ -57,34 +69,55 @@ python main.py
 
 ---
 
-## Roadmap
+## Development Roadmap
 
-### Version 0.1.2 -- COMPLETE
-- Improved Logo for Studio
-- Improved spacing in text
-  
-### Version 0.2
-- Title screen
-- Additional ASCII artwork - COMPLETE
-- More dynamic narrative pacing - COMPLETE
-- Include Mission 02-05
+### Version 1.0 Alpha (Current)
 
-### Version 0.3
+- Complete playable campaign
+- Five connected missions
+- Carrier hub
+- Character classes
+- Windows executable
+- GitHub Releases
+
+---
+
+### Version 1.1
+
+- GameState system
+- Dynamic NPC dialogue
+- Mission continuity
+- Improved mission outcomes
+
+---
+
+### Version 1.2
+
 - Save & Continue
-- Codex system
+- Codex
+- Career statistics
+- Service record
 - Unlockable medals
-- Expanded mission outcomes
 
-### Version 0.4
-- Optional voice narration
-- Dynamic battlefield events
-- Additional missions
+---
+
+### Version 1.3
+
+- Dynamic operations
+- Expanded branching paths
+- Additional carrier interactions
+- More missions
+
+---
 
 ### Future
-- Full campaign
+
+- Browser edition
 - Pygame adaptation
+- Additional Operations
 - Additional classes
-- Community-driven story expansions
+- Community events
+- Optional voice narration
 
 ---
 
@@ -92,11 +125,24 @@ python main.py
 
 This project is actively under development.
 
-If you encounter bugs, have ideas for new features, or simply want to share your experience, please open an Issue or start a Discussion on GitHub.
+If you encounter bugs, discover typos, have ideas for new features, or simply want to share your experience, please open an Issue or start a Discussion.
 
-Every piece of feedback helps improve the Sanctum.
+Every deployment helps forge the future of the Sanctum.
 
 ---
 
-Developed by **Big Thunder Forgeworks**
-All rights and everything referenced from Helldivers 2 belongs to Arrowhead. This is just a fun project inspired by our gameplay in there -- we make no money from this game whatsoever.
+## About Big Thunder Forgeworks
+
+Big Thunder Forgeworks is an independent game studio focused on creating immersive, narrative-driven experiences that emphasize world-building, atmosphere, and player choice.
+
+Ex Umbris Fabricati is our first public project.
+
+---
+
+## Disclaimer
+
+Ex Umbris Fabricati is a non-commercial fan project inspired by **Helldivers 2**.
+
+Helldivers, Super Earth, and all related intellectual property belong to **Arrowhead Game Studios** and **Sony Interactive Entertainment**.
+
+This project is created solely for entertainment and community enjoyment. No ownership of the Helldivers intellectual property is claimed.

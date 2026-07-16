@@ -19,7 +19,7 @@ from story.intro import mission_intro
 CARRIER_NAME = "The Spear of Tartarus"
 
 
-def awakening(player):
+def awakening(player, state):
     title_card(
         "PROLOGUE",
         "AWAKENING"
@@ -71,10 +71,10 @@ def awakening(player):
 
     blank()
 
-    equipment_choice(player)
+    equipment_choice(player, state)
 
 
-def equipment_choice(player):
+def equipment_choice(player, state):
     while True:
         print("What do you do?")
         print()
@@ -85,10 +85,12 @@ def equipment_choice(player):
         choice = input("Select an option: ").strip()
 
         if choice == "1":
-            don_equipment(player)
+            don_equipment(player, state)
             return
 
         if choice == "2":
+            state.set_flag("attempted_undersuit")
+
             blank()
             say("WRONG.")
             narrate("A Helldiver always wears their armor.")
@@ -100,7 +102,9 @@ def equipment_choice(player):
         say("Invalid selection. Choose option 1 or 2.")
 
 
-def don_equipment(player):
+def don_equipment(player, state):
+    state.set_flag("equipped_armor")
+
     blank()
 
     narrate("You begin donning each piece of armor into place.")
@@ -152,10 +156,10 @@ def don_equipment(player):
 
     blank()
 
-    choose_destination(player)
+    choose_destination(player, state)
 
 
-def choose_destination(player):
+def choose_destination(player, state):
     title_card(
         CARRIER_NAME.upper(),
         "INNER SANCTUM"
@@ -175,22 +179,22 @@ def choose_destination(player):
         choice = input("Select a destination: ").strip()
 
         if choice == "1":
-            visit_hall_of_embers(player)
+            visit_hall_of_embers(player, state)
 
         elif choice == "2":
-            visit_mission_planning(player)
+            visit_mission_planning(player, state)
 
         elif choice == "3":
-            visit_armory(player)
+            visit_armory(player, state)
         
         elif choice == "4":
-            visit_hangar_bay(player)
+            visit_hangar_bay(player, state)
 
         elif choice == "5":
-            visit_med_bay(player)
+            visit_med_bay(player, state)
 
         elif choice == "6":
-            deployment_confirmed = report_to_mission_deck(player)
+            deployment_confirmed = report_to_mission_deck(player, state)
 
             if deployment_confirmed:
                 return
@@ -199,27 +203,60 @@ def choose_destination(player):
             say("Invalid selection. Choose an available destination.")
 
 
-def visit_hall_of_embers(player):
+def visit_hall_of_embers(player, state):
+    state.record_visit("hall_of_embers")
+    visit_number = state.visit_count("hall_of_embers")
+
     blank()
 
     title_card(
-            CARRIER_NAME.upper(),
-            "HALL OF EMBERS"
-        )
+        CARRIER_NAME.upper(),
+        "HALL OF EMBERS"
+    )
 
-    narrate("You enter the Hall of Embers.")
-    narrate("A low flame burns at its center, reflected across walls of darkened steel.")
+    if visit_number == 1:
+        narrate("You enter the Hall of Embers.")
+        narrate("A low flame burns at its center, reflected across walls of darkened steel.")
 
-    blank()
+        blank()
 
-    narrate("Names have been etched into those walls.")
-    narrate("Specters. Veterans. The Eclipsed.")
-    narrate("Each one is remembered.")
+        narrate("Names have been etched into those walls.")
+        narrate("Specters. Veterans. The Eclipsed.")
+        narrate("Each one is remembered.")
 
-    blank()
+        blank()
 
-    narrate("You stand before the flame for a moment.")
-    narrate("Then you return to the inner Sanctum.")
+        narrate("You stand before the flame for a moment.")
+        narrate("Then you return to the inner Sanctum.")
+
+        state.set_flag("visited_hall_of_embers")
+
+    elif visit_number == 2:
+        narrate("You return to the Hall of Embers.")
+        narrate("The eternal flame burns just as steadily as before.")
+
+        blank()
+
+        narrate("The names no longer feel like distant history.")
+        narrate("Each one belonged to someone who once stood exactly where you now stand.")
+        narrate("Each one answered the call without hesitation.")
+
+        blank()
+
+        narrate("You silently offer your respect before returning to the inner Sanctum.")
+
+    else:
+        narrate("The Hall of Embers has become a place of quiet reflection.")
+        narrate("The familiar flame dances gently in the darkness.")
+
+        blank()
+
+        narrate("Every visit reminds you that one day your own story may be carved into these walls.")
+        narrate("Whether that day comes soon or many campaigns from now is up to you.")
+
+        blank()
+
+        narrate("You take one final look at the memorial before returning to the inner Sanctum.")
 
     blank()
 
@@ -228,265 +265,295 @@ def visit_hall_of_embers(player):
 # Mission Planning
 # ------------------------------------------------------------
 
-def visit_mission_planning(player):
+def visit_mission_planning(player, state):
+    state.record_visit("mission_planning")
+    visit_number = state.visit_count("mission_planning")
+
     blank()
 
     title_card(
         "MISSION PLANNING",
-        "The Spear of Tartarus"
+        CARRIER_NAME.upper()
     )
 
-    narrate(
-        "The Mission Planning Chamber hums quietly beneath the weight of countless campaigns."
-    )
+    # --------------------------------------------------------
+    # First Visit
+    # --------------------------------------------------------
 
-    narrate(
-        "Massive holographic displays drift above a circular command table, "
-        "showing occupied sectors, supply routes, and active operations."
-    )
+    if visit_number == 1:
+        state.set_flag("met_tiberius")
 
-    blank()
+        narrate(
+            "The Mission Planning Chamber hums quietly beneath the weight of countless campaigns."
+        )
 
-    narrate(
-        "Officers move through the chamber exchanging reports in hushed voices."
-    )
+        narrate(
+            "Massive holographic displays drift above a circular command table, "
+            "showing occupied sectors, supply routes, and active operations."
+        )
 
-    narrate(
-        "No one raises their voice."
-    )
+        blank()
 
-    narrate(
-        "They don't need to."
-    )
+        narrate(
+            "Officers move through the chamber exchanging reports in hushed voices."
+        )
 
-    blank()
+        narrate("No one raises their voice.")
+        narrate("They don't need to.")
 
-    narrate(
-        "Standing alone at the center of the room is the Marshal of Shadows."
-    )
+        blank()
 
-    blank()
+        narrate(
+            "Standing alone at the center of the room is the Marshal of Shadows."
+        )
 
-    say("TIBERIUS", delay=1)
-    say("Marshal of Shadows", delay=2)
+        blank()
 
-    blank()
+        say("TIBERIUS", delay=1)
+        say("Marshal of Shadows", delay=2)
 
-    narrate(
-        "His attention never leaves the tactical display."
-    )
+        blank()
 
-    narrate(
-        "Entire worlds shift beneath his fingertips as deployment routes adjust across the map."
-    )
+        narrate("His attention never leaves the tactical display.")
 
-    blank()
+        narrate(
+            "Entire worlds shift beneath his fingertips as deployment routes adjust across the map."
+        )
 
-    narrate(
-        "Eventually..."
-    )
+        blank()
 
-    narrate(
-        "without ever turning around..."
-    )
+        narrate("Eventually...")
+        narrate("without ever turning around...")
 
-    blank()
+        blank()
 
-    npc("Tiberius", "You have questions.")
+        npc("Tiberius", "You have questions.")
 
-    blank()
-
-    npc(
-        "Tiberius",
-        "Most recruits ask where they are going."
-    )
-
-    npc(
-        "Tiberius",
-        "Veterans ask who will return."
-    )
-
-    blank()
-
-    narrate(
-        "Only now does he finally look toward you."
-    )
-
-    blank()
-
-    class_name = player.class_name
-
-    if class_name == "Voidrunner":
+        blank()
 
         npc(
             "Tiberius",
-            "A Voidrunner never waits for opportunity."
+            "Most recruits ask where they are going."
         )
 
         npc(
             "Tiberius",
-            "Create it."
+            "Veterans ask who will return."
         )
 
-    elif class_name == "Grimshield":
+        blank()
+
+        narrate("Only now does he finally look toward you.")
+
+        blank()
+
+        class_name = player.class_name
+
+        if class_name == "Voidrunner":
+            npc(
+                "Tiberius",
+                "A Voidrunner never waits for opportunity."
+            )
+            npc(
+                "Tiberius",
+                "Create it."
+            )
+
+        elif class_name == "Grimshield":
+            npc(
+                "Tiberius",
+                "Every squad needs someone willing to stand when others cannot."
+            )
+            npc(
+                "Tiberius",
+                "Do not mistake stubbornness for courage."
+            )
+
+        elif class_name == "Ashreaver":
+            npc(
+                "Tiberius",
+                "Fire is an effective servant."
+            )
+            npc(
+                "Tiberius",
+                "Never allow it to become your commander."
+            )
+
+        elif class_name == "Nightreaper":
+            npc(
+                "Tiberius",
+                "Victory often belongs to the soldier never seen."
+            )
+            npc(
+                "Tiberius",
+                "Let the enemy fear shadows."
+            )
+
+        elif class_name == "Umbracaster":
+            npc(
+                "Tiberius",
+                "Confusion is a weapon."
+            )
+            npc(
+                "Tiberius",
+                "Use it wisely."
+            )
+
+        elif class_name == "Ritesmith":
+            npc(
+                "Tiberius",
+                "Wars are not won solely by rifles."
+            )
+            npc(
+                "Tiberius",
+                "Someone must keep the forge burning."
+            )
+
+        elif class_name == "Oathkeeper":
+            npc(
+                "Tiberius",
+                "Life is our rarest resource."
+            )
+            npc(
+                "Tiberius",
+                "Guard it well."
+            )
+
+        elif class_name == "Fluxhunter":
+            npc(
+                "Tiberius",
+                "One precise shot may achieve what a thousand rounds cannot."
+            )
+            npc(
+                "Tiberius",
+                "Patience is often deadlier than aggression."
+            )
+
+        elif class_name == "Fumebinder":
+            npc(
+                "Tiberius",
+                "Control the battlefield..."
+            )
+            npc(
+                "Tiberius",
+                "...and the battle often controls itself."
+            )
+
+        elif class_name == "Emberbrand":
+            npc(
+                "Tiberius",
+                "The flame inspires."
+            )
+            npc(
+                "Tiberius",
+                "Ensure it inspires your allies more than your enemies."
+            )
+
+        else:
+            npc(
+                "Tiberius",
+                "Every Helldiver writes a story."
+            )
+            npc(
+                "Tiberius",
+                "Few remember they are also writing everyone else's."
+            )
+
+        blank()
 
         npc(
             "Tiberius",
-            "Every squad needs someone willing to stand when others cannot."
+            "Remember why Ex Umbris Fabricati exists."
         )
+        npc(
+            "Tiberius",
+            "Not for glory."
+        )
+        npc(
+            "Tiberius",
+            "Not for recognition."
+        )
+        npc(
+            "Tiberius",
+            "For the Helldiver standing beside you."
+        )
+
+        blank()
+
+        narrate("The Marshal turns back toward the tactical display.")
+        narrate("The conversation is over.")
+        narrate("Somehow...")
+        narrate("you feel you have learned far more than was actually said.")
+
+    # --------------------------------------------------------
+    # Second Visit
+    # --------------------------------------------------------
+
+    elif visit_number == 2:
+        narrate("You return to the Mission Planning Chamber.")
+        narrate("The tactical map has changed since your last visit.")
+
+        blank()
+
+        narrate(
+            "New warning markers burn across sectors that were quiet only moments ago."
+        )
+
+        blank()
+
+        npc("Tiberius", "Back already?")
+
+        blank()
 
         npc(
             "Tiberius",
-            "Do not mistake stubbornness for courage."
+            "Preparation is not hesitation."
         )
-
-    elif class_name == "Ashreaver":
-
         npc(
             "Tiberius",
-            "Fire is an effective servant."
+            "Study the field."
         )
-
         npc(
             "Tiberius",
-            "Never allow it to become your commander."
+            "Then act without doubt."
         )
 
-    elif class_name == "Nightreaper":
+        blank()
 
-        npc(
-            "Tiberius",
-            "Victory often belongs to the soldier never seen."
+        narrate(
+            "The Marshal returns his attention to the shifting battle lines."
+        )
+        narrate(
+            "You take the dismissal for what it is and return to the inner Sanctum."
         )
 
-        npc(
-            "Tiberius",
-            "Let the enemy fear shadows."
-        )
-
-    elif class_name == "Umbracaster":
-
-        npc(
-            "Tiberius",
-            "Confusion is a weapon."
-        )
-
-        npc(
-            "Tiberius",
-            "Use it wisely."
-        )
-
-    elif class_name == "Ritesmith":
-
-        npc(
-            "Tiberius",
-            "Wars are not won solely by rifles."
-        )
-
-        npc(
-            "Tiberius",
-            "Someone must keep the forge burning."
-        )
-
-    elif class_name == "Oathkeeper":
-
-        npc(
-            "Tiberius",
-            "Life is our rarest resource."
-        )
-
-        npc(
-            "Tiberius",
-            "Guard it well."
-        )
-
-    elif class_name == "Fluxhunter":
-
-        npc(
-            "Tiberius",
-            "One precise shot may achieve what a thousand rounds cannot."
-        )
-
-        npc(
-            "Tiberius",
-            "Patience is often deadlier than aggression."
-        )
-
-    elif class_name == "Fumebinder":
-
-        npc(
-            "Tiberius",
-            "Control the battlefield..."
-        )
-
-        npc(
-            "Tiberius",
-            "...and the battle often controls itself."
-        )
-
-    elif class_name == "Emberbrand":
-
-        npc(
-            "Tiberius",
-            "The flame inspires."
-        )
-
-        npc(
-            "Tiberius",
-            "Ensure it inspires your allies more than your enemies."
-        )
+    # --------------------------------------------------------
+    # Third and Later Visits
+    # --------------------------------------------------------
 
     else:
+        narrate(
+            "The Mission Planning Chamber remains in constant motion."
+        )
+        narrate(
+            "Officers exchange reports while entire fronts shift across the holographic table."
+        )
+
+        blank()
 
         npc(
             "Tiberius",
-            "Every Helldiver writes a story."
+            "The map never stops changing."
         )
-
         npc(
             "Tiberius",
-            "Few remember they are also writing everyone else's."
+            "Neither should your understanding of it."
         )
 
-    blank()
+        blank()
 
-    npc(
-        "Tiberius",
-        "Remember why Ex Umbris Fabricati exists."
-    )
-
-    npc(
-        "Tiberius",
-        "Not for glory."
-    )
-
-    npc(
-        "Tiberius",
-        "Not for recognition."
-    )
-
-    npc(
-        "Tiberius",
-        "For the Helldiver standing beside you."
-    )
-
-    blank()
-
-    narrate(
-        "The Marshal turns back toward the tactical display."
-    )
-
-    narrate(
-        "The conversation is over."
-    )
-
-    narrate(
-        "Somehow..."
-    )
-
-    narrate(
-        "you feel you have learned far more than was actually said."
-    )
+        narrate("There is nothing more to add.")
+        narrate("You return to the inner Sanctum.")
 
     blank()
 
@@ -494,18 +561,41 @@ def visit_mission_planning(player):
 # Armory
 # ------------------------------------------------------------
 
-def visit_armory(player):
+# ------------------------------------------------------------
+# Armory
+# ------------------------------------------------------------
+
+def visit_armory(player, state):
+    state.record_visit("armory")
+    visit_number = state.visit_count("armory")
+
     blank()
 
     title_card(
         "ARMORY",
-        "The Spear of Tartarus"
+        CARRIER_NAME.upper()
     )
 
+    if visit_number == 1:
+        state.set_flag("met_armorers")
+        armory_first_visit(player)
+
+    elif visit_number == 2:
+        armory_second_visit()
+
+    else:
+        armory_repeat_visit()
+
+    blank()
+
+def armory_first_visit(player):
     narrate("The Armory is anything but quiet.")
     narrate("Tools strike steel.")
     narrate("Magazines lock into place.")
-    narrate("Weapons are field-stripped, inspected, and rebuilt with practiced precision.")
+    narrate(
+        "Weapons are field-stripped, inspected, "
+        "and rebuilt with practiced precision."
+    )
 
     blank()
 
@@ -560,272 +650,14 @@ def visit_armory(player):
 
     narrate("Atreides rests one hand beside a carefully calibrated rifle.")
     narrate("Spooky continues cleaning a weapon marked by old scorch damage.")
-    narrate("Valinor stands beside enough incendiary equipment to concern any reasonable person.")
+    narrate(
+        "Valinor stands beside enough incendiary equipment "
+        "to concern any reasonable person."
+    )
 
     blank()
 
-    class_name = player.class_name
-
-    # --------------------------------------------------------
-    # Voidrunner
-    # --------------------------------------------------------
-
-    if class_name == "Voidrunner":
-        npc("Atreides", "A Voidrunner.")
-        npc("Atreides", "You move faster than most people can aim.")
-        npc("Atreides", "Try not to cross my line of fire.")
-
-        blank()
-
-        npc("Spooky", "If you do cross it...")
-        npc("Spooky", "Move faster.")
-
-        blank()
-
-        npc("Valinor", "Or trail fire behind you.")
-        npc("Valinor", "That would make you easier to track.")
-
-    # --------------------------------------------------------
-    # Grimshield
-    # --------------------------------------------------------
-
-    elif class_name == "Grimshield":
-        npc("Atreides", "A Grimshield.")
-        npc("Atreides", "Stand between me and the enemy.")
-        npc("Atreides", "I will handle the rest.")
-
-        blank()
-
-        npc("Spooky", "That is his polite way of asking you to absorb incoming fire.")
-
-        blank()
-
-        npc("Valinor", "Do not worry.")
-        npc("Valinor", "I will provide covering flames.")
-
-        blank()
-
-        npc("Atreides", "That phrase does not reassure anyone.")
-
-    # --------------------------------------------------------
-    # Ashreaver
-    # --------------------------------------------------------
-
-    elif class_name == "Ashreaver":
-        npc("Spooky", "Another Ashreaver.")
-        npc("Spooky", "Good.")
-        npc("Spooky", "Someone else understands that restraint is optional.")
-
-        blank()
-
-        npc("Atreides", "Restraint is not optional.")
-
-        blank()
-
-        npc("Valinor", "It is when fire is involved.")
-
-        blank()
-
-        npc("Spooky", "See?")
-        npc("Spooky", "You are going to fit in just fine.")
-
-    # --------------------------------------------------------
-    # Nightreaper
-    # --------------------------------------------------------
-
-    elif class_name == "Nightreaper":
-        npc("Atreides", "A Nightreaper.")
-        npc("Atreides", "Quiet movement. Clean kills.")
-        npc("Atreides", "Respectable.")
-
-        blank()
-
-        npc("Spooky", "Too quiet.")
-        npc("Spooky", "I prefer the enemy to know exactly why they are dying.")
-
-        blank()
-
-        npc("Valinor", "They usually notice the flames.")
-
-        blank()
-
-        npc("Atreides", "Everyone notices the flames, Valinor.")
-
-    # --------------------------------------------------------
-    # Umbracaster
-    # --------------------------------------------------------
-
-    elif class_name == "Umbracaster":
-        npc("Spooky", "An Umbracaster.")
-        npc("Spooky", "Good.")
-        npc("Spooky", "Someone else who appreciates battlefield confusion.")
-
-        blank()
-
-        npc("Atreides", "Confusion is useful when it belongs to the enemy.")
-
-        blank()
-
-        npc("Valinor", "Fire creates confusion.")
-
-        blank()
-
-        npc("Atreides", "Fire also creates maintenance reports.")
-
-        blank()
-
-        npc("Spooky", "Also useful.")
-        npc("Spooky", "They keep command occupied.")
-
-    # --------------------------------------------------------
-    # Ritesmith
-    # --------------------------------------------------------
-
-    elif class_name == "Ritesmith":
-        npc("Atreides", "A Ritesmith.")
-        npc("Atreides", "Good.")
-        npc("Atreides", "You may be the only person here capable of keeping their equipment functional.")
-
-        blank()
-
-        npc("Spooky", "My equipment functions.")
-
-        blank()
-
-        narrate("Spooky lifts a scorched weapon from the bench.")
-        narrate("A loose component falls onto the floor.")
-
-        blank()
-
-        npc("Spooky", "Mostly.")
-
-        blank()
-
-        npc("Valinor", "Can you increase the fuel pressure on this flamethrower?")
-
-        blank()
-
-        npc("Atreides", "Do not answer that.")
-
-    # --------------------------------------------------------
-    # Oathkeeper
-    # --------------------------------------------------------
-
-    elif class_name == "Oathkeeper":
-        npc("Spooky", "An Oathkeeper?")
-        npc("Spooky", "Excellent.")
-
-        blank()
-
-        npc("Valinor", "Now someone can keep us alive when my ideas succeed.")
-
-        blank()
-
-        npc("Atreides", "You mean when your ideas fail.")
-
-        blank()
-
-        npc("Valinor", "The distinction is mostly philosophical.")
-
-        blank()
-
-        npc("Atreides", "Stay close to them.")
-        npc("Atreides", "You will be busy.")
-
-    # --------------------------------------------------------
-    # Fluxhunter
-    # --------------------------------------------------------
-
-    elif class_name == "Fluxhunter":
-        npc("Atreides", "Another Fluxhunter.")
-        npc("Atreides", "Good.")
-        npc(
-            "Atreides",
-            "Someone around here still understands that one accurate shot "
-            "beats a hundred wasted ones."
-        )
-
-        blank()
-
-        npc("Spooky", "Or...")
-        npc("Spooky", "One hundred accurate shots.")
-
-        blank()
-
-        npc("Valinor", "While on fire.")
-
-        blank()
-
-        npc("Atreides", "I regret beginning this conversation.")
-
-    # --------------------------------------------------------
-    # Fumebinder
-    # --------------------------------------------------------
-
-    elif class_name == "Fumebinder":
-        npc("Atreides", "A Fumebinder.")
-        npc("Atreides", "Keep the enemy blinded.")
-        npc("Atreides", "Just leave me a clear firing lane.")
-
-        blank()
-
-        npc("Spooky", "Or fill the entire field with smoke.")
-        npc("Spooky", "Then we all become surprises.")
-
-        blank()
-
-        npc("Valinor", "Smoke usually means fire is nearby.")
-
-        blank()
-
-        npc("Atreides", "Not everything leads back to fire.")
-
-        blank()
-
-        npc("Valinor", "Eventually it does.")
-
-    # --------------------------------------------------------
-    # Emberbrand
-    # --------------------------------------------------------
-
-    elif class_name == "Emberbrand":
-        npc("Valinor", "Now there is someone with taste.")
-        npc("Valinor", "Ignore them.")
-        npc("Valinor", "Fire solves everything eventually.")
-
-        blank()
-
-        npc("Atreides", "Including our paint jobs.")
-
-        blank()
-
-        npc("Spooky", "Paint can be replaced.")
-
-        blank()
-
-        npc("Valinor", "Exactly.")
-
-        blank()
-
-        npc("Atreides", "You are encouraging each other again.")
-        npc("Atreides", "That is never a good sign.")
-
-    # --------------------------------------------------------
-    # Fallback
-    # --------------------------------------------------------
-
-    else:
-        npc("Atreides", "Know your weapon.")
-        npc("Atreides", "Know your target.")
-        npc("Atreides", "Do not confuse the order.")
-
-        blank()
-
-        npc("Spooky", "And bring enough ammunition.")
-
-        blank()
-
-        npc("Valinor", "And fuel.")
+    armory_class_dialogue(player)
 
     blank()
 
@@ -865,20 +697,349 @@ def visit_armory(player):
 
     narrate("The argument resumes before you have even reached the door.")
 
+def armory_class_dialogue(player):
+    class_name = player.class_name
+
+    if class_name == "Voidrunner":
+        npc("Atreides", "A Voidrunner.")
+        npc("Atreides", "You move faster than most people can aim.")
+        npc("Atreides", "Try not to cross my line of fire.")
+
+        blank()
+
+        npc("Spooky", "If you do cross it...")
+        npc("Spooky", "Move faster.")
+
+        blank()
+
+        npc("Valinor", "Or trail fire behind you.")
+        npc("Valinor", "That would make you easier to track.")
+
+    elif class_name == "Grimshield":
+        npc("Atreides", "A Grimshield.")
+        npc("Atreides", "Stand between me and the enemy.")
+        npc("Atreides", "I will handle the rest.")
+
+        blank()
+
+        npc(
+            "Spooky",
+            "That is his polite way of asking you to absorb incoming fire."
+        )
+
+        blank()
+
+        npc("Valinor", "Do not worry.")
+        npc("Valinor", "I will provide covering flames.")
+
+        blank()
+
+        npc("Atreides", "That phrase does not reassure anyone.")
+
+    elif class_name == "Ashreaver":
+        npc("Spooky", "Another Ashreaver.")
+        npc("Spooky", "Good.")
+        npc(
+            "Spooky",
+            "Someone else understands that restraint is optional."
+        )
+
+        blank()
+
+        npc("Atreides", "Restraint is not optional.")
+
+        blank()
+
+        npc("Valinor", "It is when fire is involved.")
+
+        blank()
+
+        npc("Spooky", "See?")
+        npc("Spooky", "You are going to fit in just fine.")
+
+    elif class_name == "Nightreaper":
+        npc("Atreides", "A Nightreaper.")
+        npc("Atreides", "Quiet movement. Clean kills.")
+        npc("Atreides", "Respectable.")
+
+        blank()
+
+        npc("Spooky", "Too quiet.")
+        npc(
+            "Spooky",
+            "I prefer the enemy to know exactly why they are dying."
+        )
+
+        blank()
+
+        npc("Valinor", "They usually notice the flames.")
+
+        blank()
+
+        npc("Atreides", "Everyone notices the flames, Valinor.")
+
+    elif class_name == "Umbracaster":
+        npc("Spooky", "An Umbracaster.")
+        npc("Spooky", "Good.")
+        npc(
+            "Spooky",
+            "Someone else who appreciates battlefield confusion."
+        )
+
+        blank()
+
+        npc(
+            "Atreides",
+            "Confusion is useful when it belongs to the enemy."
+        )
+
+        blank()
+
+        npc("Valinor", "Fire creates confusion.")
+
+        blank()
+
+        npc("Atreides", "Fire also creates maintenance reports.")
+
+        blank()
+
+        npc("Spooky", "Also useful.")
+        npc("Spooky", "They keep command occupied.")
+
+    elif class_name == "Ritesmith":
+        npc("Atreides", "A Ritesmith.")
+        npc("Atreides", "Good.")
+        npc(
+            "Atreides",
+            "You may be the only person here capable of keeping "
+            "their equipment functional."
+        )
+
+        blank()
+
+        npc("Spooky", "My equipment functions.")
+
+        blank()
+
+        narrate("Spooky lifts a scorched weapon from the bench.")
+        narrate("A loose component falls onto the floor.")
+
+        blank()
+
+        npc("Spooky", "Mostly.")
+
+        blank()
+
+        npc(
+            "Valinor",
+            "Can you increase the fuel pressure on this flamethrower?"
+        )
+
+        blank()
+
+        npc("Atreides", "Do not answer that.")
+
+    elif class_name == "Oathkeeper":
+        npc("Spooky", "An Oathkeeper?")
+        npc("Spooky", "Excellent.")
+
+        blank()
+
+        npc(
+            "Valinor",
+            "Now someone can keep us alive when my ideas succeed."
+        )
+
+        blank()
+
+        npc("Atreides", "You mean when your ideas fail.")
+
+        blank()
+
+        npc("Valinor", "The distinction is mostly philosophical.")
+
+        blank()
+
+        npc("Atreides", "Stay close to them.")
+        npc("Atreides", "You will be busy.")
+
+    elif class_name == "Fluxhunter":
+        npc("Atreides", "Another Fluxhunter.")
+        npc("Atreides", "Good.")
+        npc(
+            "Atreides",
+            "Someone around here still understands that one accurate shot "
+            "beats a hundred wasted ones."
+        )
+
+        blank()
+
+        npc("Spooky", "Or...")
+        npc("Spooky", "One hundred accurate shots.")
+
+        blank()
+
+        npc("Valinor", "While on fire.")
+
+        blank()
+
+        npc("Atreides", "I regret beginning this conversation.")
+
+    elif class_name == "Fumebinder":
+        npc("Atreides", "A Fumebinder.")
+        npc("Atreides", "Keep the enemy blinded.")
+        npc("Atreides", "Just leave me a clear firing lane.")
+
+        blank()
+
+        npc("Spooky", "Or fill the entire field with smoke.")
+        npc("Spooky", "Then we all become surprises.")
+
+        blank()
+
+        npc("Valinor", "Smoke usually means fire is nearby.")
+
+        blank()
+
+        npc("Atreides", "Not everything leads back to fire.")
+
+        blank()
+
+        npc("Valinor", "Eventually it does.")
+
+    elif class_name == "Emberbrand":
+        npc("Valinor", "Now there is someone with taste.")
+        npc("Valinor", "Ignore them.")
+        npc("Valinor", "Fire solves everything eventually.")
+
+        blank()
+
+        npc("Atreides", "Including our paint jobs.")
+
+        blank()
+
+        npc("Spooky", "Paint can be replaced.")
+
+        blank()
+
+        npc("Valinor", "Exactly.")
+
+        blank()
+
+        npc("Atreides", "You are encouraging each other again.")
+        npc("Atreides", "That is never a good sign.")
+
+    else:
+        npc("Atreides", "Know your weapon.")
+        npc("Atreides", "Know your target.")
+        npc("Atreides", "Do not confuse the order.")
+
+        blank()
+
+        npc("Spooky", "And bring enough ammunition.")
+
+        blank()
+
+        npc("Valinor", "And fuel.")
+
+def armory_second_visit():
+    narrate("You return to the Armory.")
+    narrate("The same three Helldivers remain gathered around the workbench.")
+    narrate("The argument has apparently continued without interruption.")
+
     blank()
+
+    npc("Atreides", "We settled this already.")
+    npc("Valinor", "No. You stopped listening.")
+    npc("Spooky", "That is not the same thing.")
+
+    blank()
+
+    npc("Atreides", "Your equipment is ready.")
+    npc("Atreides", "Unlike this conversation.")
+
+    blank()
+
+    narrate("Valinor quietly adjusts the fuel valve on a flamethrower.")
+    narrate("Atreides notices immediately.")
+
+    blank()
+
+    npc("Atreides", "Do not.")
+    npc("Valinor", "I have done nothing.")
+    npc("Spooky", "Yet.")
+
+    blank()
+
+    narrate(
+        "You decide to leave before the word 'yet' "
+        "becomes a maintenance report."
+    )
+
+
+def armory_repeat_visit():
+    narrate(
+        "The Armory greets you with familiar noise, heat, "
+        "and barely controlled experimentation."
+    )
+
+    blank()
+
+    npc("Spooky", "Back again?")
+    npc("Valinor", "They appreciate quality equipment.")
+    npc(
+        "Atreides",
+        "They are checking whether the ship is still intact."
+    )
+
+    blank()
+
+    narrate("A metallic pop sounds from somewhere beneath the workbench.")
+
+    blank()
+
+    npc("Spooky", "Still intact.")
+    npc("Atreides", "For now.")
+
+    blank()
+
+    narrate(
+        "You return to the inner Sanctum while that statement remains true."
+    )
+
 
 # ------------------------------------------------------------
 # Med Bay
 # ------------------------------------------------------------
 
-def visit_med_bay(player):
+# ------------------------------------------------------------
+# Med Bay
+# ------------------------------------------------------------
+
+def visit_med_bay(player, state):
+    state.record_visit("med_bay")
+    visit_number = state.visit_count("med_bay")
+
     blank()
 
     title_card(
         "MED BAY",
-        "The Spear of Tartarus"
+        CARRIER_NAME.upper()
     )
 
+    if visit_number == 1:
+        state.set_flag("met_caz")
+        med_bay_first_visit(player)
+
+    elif visit_number == 2:
+        med_bay_second_visit()
+
+    else:
+        med_bay_repeat_visit()
+
+    blank()
+
+def med_bay_first_visit(player):
     narrate("The Med Bay is unusually quiet.")
     narrate(
         "The sterile scent of antiseptic mingles with machine oil, "
@@ -926,73 +1087,14 @@ def visit_med_bay(player):
     narrate("There is no rush in Caz's movements.")
     narrate("Everything is measured.")
     narrate("Everything has purpose.")
-    narrate("It is the confidence of someone accustomed to bringing people home.")
+    narrate(
+        "It is the confidence of someone accustomed "
+        "to bringing people home."
+    )
 
     blank()
 
-    class_name = player.class_name
-
-    if class_name == "Voidrunner":
-        npc("Caz", "A Voidrunner.")
-        npc("Caz", "You people always disappear over the horizon before anyone can stop you.")
-        npc("Caz", "Try to leave enough of a trail that I can find you when things go wrong.")
-
-    elif class_name == "Grimshield":
-        npc("Caz", "A Grimshield.")
-        npc("Caz", "Standing between danger and everyone else is admirable.")
-        npc("Caz", "It is also an excellent way to become my most frequent patient.")
-
-    elif class_name == "Ashreaver":
-        npc("Caz", "An Ashreaver.")
-        npc("Caz", "I assume the scorch marks are intentional.")
-        npc("Caz", "Just remember that friendly armor burns too.")
-
-    elif class_name == "Nightreaper":
-        npc("Caz", "A Nightreaper.")
-        npc("Caz", "You are difficult enough to find when you are healthy.")
-        npc("Caz", "Do not make me search the whole battlefield while you quietly bleed somewhere.")
-
-    elif class_name == "Umbracaster":
-        npc("Caz", "An Umbracaster.")
-        npc("Caz", "You keep their attention elsewhere.")
-        npc("Caz", "I will make sure our people remain alive long enough to benefit from it.")
-
-    elif class_name == "Ritesmith":
-        npc("Caz", "A Ritesmith.")
-        npc("Caz", "You repair machines. I repair Helldivers.")
-        npc("Caz", "Between the two of us, perhaps this operation will return in one piece.")
-
-    elif class_name == "Oathkeeper":
-        npc("Caz", "An Oathkeeper.")
-        npc("Caz", "Good.")
-        npc("Caz", "We will both have plenty of work today.")
-
-        blank()
-
-        narrate("A faint smile crosses Caz's face.")
-
-        blank()
-
-        npc("Caz", "Try not to steal all my patients.")
-
-    elif class_name == "Fluxhunter":
-        npc("Caz", "A Fluxhunter.")
-        npc("Caz", "I have seen your kind turn impossible odds into impressive casualty reports.")
-        npc("Caz", "Aim carefully. I would rather treat the enemy's mistakes than yours.")
-
-    elif class_name == "Fumebinder":
-        npc("Caz", "A Fumebinder.")
-        npc("Caz", "Smoke is useful until nobody can see the wounded.")
-        npc("Caz", "Leave me a clear path, and I will handle the rest.")
-
-    elif class_name == "Emberbrand":
-        npc("Caz", "An Emberbrand.")
-        npc("Caz", "I know the flame is part of the appeal.")
-        npc("Caz", "Try not to arrive back here still actively on fire.")
-
-    else:
-        npc("Caz", "Everyone wants to be remembered as the hero.")
-        npc("Caz", "Few volunteer to make sure the hero gets home.")
+    med_bay_class_dialogue(player)
 
     blank()
 
@@ -1029,54 +1131,241 @@ def visit_med_bay(player):
 
     npc("Caz", "Preferably standing.")
 
+def med_bay_class_dialogue(player):
+    class_name = player.class_name
+
+    if class_name == "Voidrunner":
+        npc("Caz", "A Voidrunner.")
+        npc(
+            "Caz",
+            "You people always disappear over the horizon "
+            "before anyone can stop you."
+        )
+        npc(
+            "Caz",
+            "Try to leave enough of a trail that I can find you "
+            "when things go wrong."
+        )
+
+    elif class_name == "Grimshield":
+        npc("Caz", "A Grimshield.")
+        npc(
+            "Caz",
+            "Standing between danger and everyone else is admirable."
+        )
+        npc(
+            "Caz",
+            "It is also an excellent way to become "
+            "my most frequent patient."
+        )
+
+    elif class_name == "Ashreaver":
+        npc("Caz", "An Ashreaver.")
+        npc("Caz", "I assume the scorch marks are intentional.")
+        npc("Caz", "Just remember that friendly armor burns too.")
+
+    elif class_name == "Nightreaper":
+        npc("Caz", "A Nightreaper.")
+        npc(
+            "Caz",
+            "You are difficult enough to find when you are healthy."
+        )
+        npc(
+            "Caz",
+            "Do not make me search the whole battlefield "
+            "while you quietly bleed somewhere."
+        )
+
+    elif class_name == "Umbracaster":
+        npc("Caz", "An Umbracaster.")
+        npc("Caz", "You keep their attention elsewhere.")
+        npc(
+            "Caz",
+            "I will make sure our people remain alive "
+            "long enough to benefit from it."
+        )
+
+    elif class_name == "Ritesmith":
+        npc("Caz", "A Ritesmith.")
+        npc("Caz", "You repair machines. I repair Helldivers.")
+        npc(
+            "Caz",
+            "Between the two of us, perhaps this operation "
+            "will return in one piece."
+        )
+
+    elif class_name == "Oathkeeper":
+        npc("Caz", "An Oathkeeper.")
+        npc("Caz", "Good.")
+        npc("Caz", "We will both have plenty of work today.")
+
+        blank()
+
+        narrate("A faint smile crosses Caz's face.")
+
+        blank()
+
+        npc("Caz", "Try not to steal all my patients.")
+
+    elif class_name == "Fluxhunter":
+        npc("Caz", "A Fluxhunter.")
+        npc(
+            "Caz",
+            "I have seen your kind turn impossible odds "
+            "into impressive casualty reports."
+        )
+        npc(
+            "Caz",
+            "Aim carefully. I would rather treat "
+            "the enemy's mistakes than yours."
+        )
+
+    elif class_name == "Fumebinder":
+        npc("Caz", "A Fumebinder.")
+        npc(
+            "Caz",
+            "Smoke is useful until nobody can see the wounded."
+        )
+        npc(
+            "Caz",
+            "Leave me a clear path, and I will handle the rest."
+        )
+
+    elif class_name == "Emberbrand":
+        npc("Caz", "An Emberbrand.")
+        npc("Caz", "I know the flame is part of the appeal.")
+        npc(
+            "Caz",
+            "Try not to arrive back here still actively on fire."
+        )
+
+    else:
+        npc(
+            "Caz",
+            "Everyone wants to be remembered as the hero."
+        )
+        npc(
+            "Caz",
+            "Few volunteer to make sure the hero gets home."
+        )
+
+def med_bay_second_visit():
+    narrate("You return to the Med Bay.")
+    narrate(
+        "Caz remains at the central workbench, "
+        "inspecting a row of sealed stim cartridges."
+    )
+
     blank()
+
+    npc("Caz", "Back again?")
+    npc("Caz", "Either you are cautious, or you expect trouble.")
+
+    blank()
+
+    narrate(
+        "He holds one cartridge toward the light, "
+        "checks the seal, and places it back in line."
+    )
+
+    blank()
+
+    npc("Caz", "Both are acceptable reasons.")
+
+    blank()
+
+    npc("Caz", "The unacceptable reason is curiosity.")
+    npc("Caz", "Medical equipment is less interesting when you need it.")
+
+    blank()
+
+    narrate(
+        "You leave him to his preparations "
+        "and return to the inner Sanctum."
+    )
+
+def med_bay_repeat_visit():
+    narrate(
+        "The Med Bay has become a familiar island "
+        "of order aboard the carrier."
+    )
+    narrate("Caz glances up before you can say anything.")
+
+    blank()
+
+    npc("Caz", "You know where everything is by now.")
+    npc("Caz", "Try not to need any of it.")
+
+    blank()
+
+    narrate("Another stim cartridge clicks into place.")
+
+    blank()
+
+    npc("Caz", "And if you do need it...")
+    npc("Caz", "Make sure you are close enough for me to reach.")
+
+    blank()
+
+    narrate("You return to the inner Sanctum.")
 
 # ------------------------------------------------------------
 # Hangar Bay
 # ------------------------------------------------------------
 
-def visit_hangar_bay(player):
+# ------------------------------------------------------------
+# Hangar Bay
+# ------------------------------------------------------------
+
+def visit_hangar_bay(player, state):
+    state.record_visit("hangar_bay")
+    visit_number = state.visit_count("hangar_bay")
+
     blank()
 
     title_card(
         "HANGAR BAY",
-        "The Spear of Tartarus"
+        CARRIER_NAME.upper()
     )
 
-    narrate(
-        "The Hangar Bay is alive with controlled chaos."
-    )
+    if visit_number == 1:
+        state.set_flag("heard_brexor_ship_story")
+        hangar_bay_first_visit()
+
+    elif visit_number == 2:
+        hangar_bay_second_visit()
+
+    else:
+        hangar_bay_repeat_visit()
+
+    blank()
+
+def hangar_bay_first_visit():
+    narrate("The Hangar Bay is alive with controlled chaos.")
 
     narrate(
-        "Deck crews weave between Pelicans and drop pods while engineers race against the clock."
+        "Deck crews weave between Pelicans and drop pods "
+        "while engineers race against the clock."
     )
 
-    narrate(
-        "Fuel lines hiss."
-    )
+    narrate("Fuel lines hiss.")
+    narrate("Hydraulic lifts whine.")
 
     narrate(
-        "Hydraulic lifts whine."
-    )
-
-    narrate(
-        "Somewhere overhead, a launch alarm briefly sounds before falling silent once more."
+        "Somewhere overhead, a launch alarm briefly sounds "
+        "before falling silent once more."
     )
 
     blank()
 
-    narrate(
-        "Every Helldiver you pass is preparing for deployment."
-    )
-
-    narrate(
-        "Except one."
-    )
+    narrate("Every Helldiver you pass is preparing for deployment.")
+    narrate("Except one.")
 
     blank()
 
     narrate(
-        "Leaning comfortably against a stack of supply crates is a Helldiver who appears to have absolutely nowhere important to be."
+        "Leaning comfortably against a stack of supply crates "
+        "is a Helldiver who appears to have absolutely nowhere important to be."
     )
 
     blank()
@@ -1086,71 +1375,44 @@ def visit_hangar_bay(player):
 
     blank()
 
-    narrate(
-        "He notices you almost immediately."
-    )
-
-    narrate(
-        "A grin slowly spreads across his face."
-    )
+    narrate("He notices you almost immediately.")
+    narrate("A grin slowly spreads across his face.")
 
     blank()
 
-    npc(
-        "Brexor",
-        "Hey..."
-    )
-
-    npc(
-        "Brexor",
-        "Come here for a second."
-    )
+    npc("Brexor", "Hey...")
+    npc("Brexor", "Come here for a second.")
 
     blank()
 
     narrate(
-        "He glances around the Hangar as though checking to make sure nobody is listening."
+        "He glances around the Hangar as though checking "
+        "to make sure nobody is listening."
     )
 
     blank()
 
-    npc(
-        "Brexor",
-        "You know what this carrier is called..."
-    )
+    npc("Brexor", "You know what this carrier is called...")
 
     blank()
 
-    npc(
-        "Brexor",
-        "The Spear of Tartarus."
-    )
+    npc("Brexor", CARRIER_NAME + ".")
 
     blank()
 
-    npc(
-        "Brexor",
-        "...my idea."
-    )
+    npc("Brexor", "...my idea.")
 
     blank()
 
-    narrate(
-        "He folds his arms proudly."
-    )
+    narrate("He folds his arms proudly.")
 
     blank()
 
-    npc(
-        "Brexor",
-        "Named it myself."
-    )
+    npc("Brexor", "Named it myself.")
 
     blank()
 
-    narrate(
-        "Before you can respond..."
-    )
+    narrate("Before you can respond...")
 
     blank()
 
@@ -1161,16 +1423,11 @@ def visit_hangar_bay(player):
 
     blank()
 
-    narrate(
-        "Brexor lets out a dramatic sigh."
-    )
+    narrate("Brexor lets out a dramatic sigh.")
 
     blank()
 
-    npc(
-        "Brexor",
-        "Nobody ever believes me."
-    )
+    npc("Brexor", "Nobody ever believes me.")
 
     blank()
 
@@ -1181,80 +1438,48 @@ def visit_hangar_bay(player):
 
     blank()
 
-    narrate(
-        "He leans in slightly."
-    )
+    narrate("He leans in slightly.")
 
     blank()
 
-    npc(
-        "Brexor",
-        "Between you and me..."
-    )
+    npc("Brexor", "Between you and me...")
 
     blank()
 
-    npc(
-        "Brexor",
-        "I definitely named this one."
-    )
+    npc("Brexor", "I definitely named this one.")
 
     blank()
 
-    narrate(
-        "A mechanic walks past, shaking their head."
-    )
+    narrate("A mechanic walks past, shaking their head.")
 
     blank()
 
-    npc(
-        "Mechanic",
-        "You absolutely did not."
-    )
+    npc("Mechanic", "You absolutely did not.")
 
     blank()
 
-    npc(
-        "Brexor",
-        "See?"
-    )
-
-    npc(
-        "Brexor",
-        "The conspiracy goes deeper than I thought."
-    )
+    npc("Brexor", "See?")
+    npc("Brexor", "The conspiracy goes deeper than I thought.")
 
     blank()
 
     narrate(
-        "He laughs to himself before pointing toward the rows of waiting drop pods."
+        "He laughs to himself before pointing toward "
+        "the rows of waiting drop pods."
     )
 
     blank()
 
-    npc(
-        "Brexor",
-        "Seriously though..."
-    )
-
-    npc(
-        "Brexor",
-        "Whatever happens down there..."
-    )
+    npc("Brexor", "Seriously though...")
+    npc("Brexor", "Whatever happens down there...")
 
     blank()
 
-    npc(
-        "Brexor",
-        "Come back."
-    )
+    npc("Brexor", "Come back.")
 
     blank()
 
-    npc(
-        "Brexor",
-        "Someone has to keep confirming my story."
-    )
+    npc("Brexor", "Someone has to keep confirming my story.")
 
     blank()
 
@@ -1265,18 +1490,14 @@ def visit_hangar_bay(player):
 
     blank()
 
-    narrate(
-        "Somehow..."
-    )
-
-    narrate(
-        "you suspect they never will."
-    )
+    narrate("Somehow...")
+    narrate("you suspect they never will.")
 
     blank()
 
     narrate(
-        "Behind him, another Pelican settles onto the deck as crews rush to prepare the next wave of deployments."
+        "Behind him, another Pelican settles onto the deck "
+        "as crews rush to prepare the next wave of deployments."
     )
 
     blank()
@@ -1291,54 +1512,194 @@ def visit_hangar_bay(player):
 
     npc("Brexor", "You heard it from me first.")
 
+def hangar_bay_second_visit():
+    narrate("You return to the Hangar Bay.")
+    narrate(
+        "Brexor spots you before you have taken three steps onto the deck."
+    )
+
+    blank()
+
+    npc("Brexor", "Good. A returning witness.")
+    npc("Brexor", "I have been gathering evidence.")
+
+    blank()
+
+    narrate(
+        "He produces a folded scrap of paper covered in handwriting."
+    )
+
+    blank()
+
+    npc("Brexor", "Names. Dates. Testimony.")
+    npc("Deck Chief", "That is a lunch order.")
+    npc("Brexor", "Evidence can take many forms.")
+
+    blank()
+
+    npc("Brexor", "The truth remains unchanged.")
+    npc("Brexor", "I named this ship.")
+
+    blank()
+
+    narrate(
+        "A nearby deckhand pauses long enough to shake their head."
+    )
+
+    blank()
+
+    npc("Deckhand", "You still did not name it.")
+    npc("Brexor", "Another participant in the conspiracy.")
+
+    blank()
+
+    narrate(
+        "You leave Brexor to continue building his case."
+    )
+
+def hangar_bay_repeat_visit():
+    narrate(
+        "The Hangar Bay continues its endless cycle "
+        "of landings, launches, and hurried repairs."
+    )
+
+    blank()
+
+    npc("Brexor", "You still believe me, right?")
+
+    blank()
+
+    narrate(
+        "A nearby mechanic stops working just long enough "
+        "to look in your direction."
+    )
+
+    blank()
+
+    npc("Mechanic", "Do not encourage him.")
+    npc(
+        "Brexor",
+        "That sounds exactly like something said during a cover-up."
+    )
+
+    blank()
+
+    npc("Brexor", "The truth will surface eventually.")
+    npc("Mechanic", "Not if the truth is that you made it up.")
+
+    blank()
+
+    narrate(
+        "You leave Brexor to defend his version of history."
+    )
+
 
 # ------------------------------------------------------------
 # Mission Deck
 # ------------------------------------------------------------
 
-def report_to_mission_deck(player):
+def report_to_mission_deck(player, state):
+    state.record_visit("mission_deck")
+    visit_number = state.visit_count("mission_deck")
+
     blank()
 
     title_card(
         "MISSION DECK",
-        "The Spear of Tartarus"
+        CARRIER_NAME.upper()
     )
 
-    narrate("The Mission Deck is alive with disciplined activity.")
-    narrate("Operations officers relay tactical updates between rows of illuminated terminals.")
-    narrate("Flight crews finalize launch windows.")
-    narrate("Technicians perform final diagnostics on the waiting drop pods.")
+    if visit_number == 1:
+        narrate("The Mission Deck is alive with disciplined activity.")
+        narrate(
+            "Operations officers relay tactical updates "
+            "between rows of illuminated terminals."
+        )
+        narrate("Flight crews finalize launch windows.")
+        narrate(
+            "Technicians perform final diagnostics "
+            "on the waiting drop pods."
+        )
 
-    blank()
+        blank()
 
-    computer("[SYS] OPERATIVE DETECTED", delay=0.6)
-    computer(
-        f"[SYS] CALLSIGN: {player.callsign.upper()}",
-        delay=0.6
-    )
-    computer(
-        f"[SYS] CLASSIFICATION: {player.class_name.upper()}",
-        delay=0.8
-    )
-    computer("[SYS] DROP WINDOW AVAILABLE", delay=1)
+        computer("[SYS] OPERATIVE DETECTED", delay=0.6)
+        computer(
+            f"[SYS] CALLSIGN: {player.callsign.upper()}",
+            delay=0.6
+        )
+        computer(
+            f"[SYS] CLASSIFICATION: {player.class_name.upper()}",
+            delay=0.8
+        )
+        computer("[SYS] DROP WINDOW AVAILABLE", delay=1)
 
-    blank()
+        blank()
 
-    radio("[SHIPWIDE COMMUNICATION]", delay=0.5)
-    npc("Tiberius", "Attention, Sanctum.")
-    npc("Tiberius", "Your destination has already been chosen.")
-    npc("Tiberius", "What remains...")
-    npc("Tiberius", "...is what you choose to become once you arrive.")
+        radio("[SHIPWIDE COMMUNICATION]", delay=0.5)
+        npc("Tiberius", "Attention, Sanctum.")
+        npc("Tiberius", "Your destination has already been chosen.")
+        npc("Tiberius", "What remains...")
+        npc(
+            "Tiberius",
+            "...is what you choose to become once you arrive."
+        )
 
-    blank()
+        blank()
 
-    npc("Operations Officer", "Drop pods are green.")
-    npc("Operations Officer", "All Helldivers report to launch stations.")
+        npc("Operations Officer", "Drop pods are green.")
+        npc(
+            "Operations Officer",
+            "All Helldivers report to launch stations."
+        )
 
-    blank()
+        blank()
 
-    # Show the mission briefing the first time the player enters.
-    mission_intro(player)
+        if state.current_mission == 1:
+            mission_intro(player, state)
+        else:
+            computer(
+                f"[SYS] MISSION {state.current_mission:02d} BRIEFING LOADED",
+                delay=0.8
+            )
+            npc(
+                "Operations Officer",
+                "Full tactical details will be transmitted during deployment."
+            )
+
+        state.set_flag("reviewed_mission_briefing")
+
+    else:
+        narrate("You return to the Mission Deck.")
+        narrate(
+            "The launch crews recognize you and restore "
+            "your deployment station."
+        )
+        narrate("Your drop window remains available.")
+
+        blank()
+
+        computer("[SYS] OPERATIVE RECOGNIZED", delay=0.6)
+        computer(
+            f"[SYS] CALLSIGN: {player.callsign.upper()}",
+            delay=0.6
+        )
+        computer(
+            f"[SYS] NEXT MISSION: {state.current_mission:02d}",
+            delay=0.8
+        )
+        computer("[SYS] DEPLOYMENT STATUS: STANDBY", delay=0.8)
+
+        blank()
+
+        npc(
+            "Operations Officer",
+            "Your briefing remains on file."
+        )
+        npc(
+            "Operations Officer",
+            "Proceed when ready."
+        )
 
     while True:
         blank()
@@ -1357,18 +1718,40 @@ def report_to_mission_deck(player):
 
         if choice == "1":
             blank()
-            mission_intro(player)
+
+            if state.current_mission == 1:
+                mission_intro(player, state)
+            else:
+                computer(
+                    f"[SYS] MISSION {state.current_mission:02d} BRIEFING LOADED",
+                    delay=0.8
+                )
+                npc(
+                    "Operations Officer",
+                    "Full tactical details will be transmitted during deployment."
+                )
+
+            state.set_flag("reviewed_mission_briefing")
 
         elif choice == "2":
             blank()
-            npc("Operations Officer", "Deployment placed on standby.")
-            narrate("You step away from the launch station and return to the inner Sanctum.")
+
+            npc(
+                "Operations Officer",
+                "Deployment placed on standby."
+            )
+            narrate(
+                "You step away from the launch station "
+                "and return to the inner Sanctum."
+            )
+
             blank()
 
             return False
 
         elif choice == "3":
-            deploy_sequence(player)
+            state.set_flag("deployment_confirmed")
+            deploy_sequence(player, state)
             return True
 
         else:
@@ -1378,7 +1761,10 @@ def report_to_mission_deck(player):
 # Deployment Sequence
 # ------------------------------------------------------------
 
-def deploy_sequence(player):
+def deploy_sequence(player, state):
+    state.set_flag("currently_deployed")
+    state.set_flag("departed_spear_of_tartarus")
+
     blank()
 
     npc("Operations Officer", "Deployment confirmed.")
@@ -1464,7 +1850,7 @@ def deploy_sequence(player):
 
     blank()
 
-    narrate("The pod tears free from The Spear of Tartarus.")
+    narrate(f"The pod tears free from {CARRIER_NAME}.")
     narrate("Your body presses into the restraints as the carrier vanishes above you.")
     narrate("Fire spreads across the viewport.")
     narrate("The surface rushes closer.")

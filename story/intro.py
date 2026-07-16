@@ -95,7 +95,7 @@ def sanctum_registration():
     blank()
 
 
-def mission_intro(player):
+def mission_intro(player, state):
     blank()
     title_card(
         "MISSION 01",

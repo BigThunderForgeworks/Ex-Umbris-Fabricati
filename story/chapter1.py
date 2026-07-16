@@ -21,16 +21,16 @@ from story.endings import final_words, thank_you
 # Chapter Entry Point
 # ------------------------------------------------------------
 
-def start_chapter_one(player):
+def start_chapter_one(player, state):
     """Starts Mission 01 after the intro briefing."""
-    first_choice(player)
+    first_choice(player, state)
 
 
 # ------------------------------------------------------------
 # First Branch: Landing Zone
 # ------------------------------------------------------------
 
-def first_choice(player):
+def first_choice(player, state):
     blank()
     narrate("Your squad descends through clouds of ash and amber spores.", delay=1.5)
     computer("[TACTICAL] Feeds updating with telemetry on enemy movement.", delay=0.75)
@@ -44,14 +44,14 @@ def first_choice(player):
     ])
 
     if choice == 1:
-        assault_hive(player)
+        assault_hive(player, state)
     elif choice == 2:
-        search_outpost(player)
+        search_outpost(player, state)
     elif choice == 3:
-        scout_ridge(player)
+        scout_ridge(player, state)
 
 
-def assault_hive(player):
+def assault_hive(player, state):
     blank()
     narrate("You slam into the earth beside the main hive.", delay=1.5)
     narrate("The impact crater steams around your pod as the locks release.", delay=1.5)
@@ -62,10 +62,10 @@ def assault_hive(player):
 
     blank()
     narrate("The first hive node collapses beneath coordinated fire and judicious use of grenades.", delay=2)
-    second_choice(player)
+    second_choice(player, state)
 
 
-def search_outpost(player):
+def search_outpost(player, state):
     blank()
     narrate("Retro-thrusters fire as you divert toward the ruined outpost.", delay=1.5)
     narrate("Half-buried walls jut from the soil like broken teeth.", delay=1.5)
@@ -77,10 +77,10 @@ def search_outpost(player):
 
     blank()
     computer("[SIGNAL] Hidden distress beacon detected beneath the rubble.", delay=0.75)
-    second_choice(player)
+    second_choice(player, state)
 
 
-def scout_ridge(player):
+def scout_ridge(player, state):
     blank()
     narrate("You land high above the valley.", delay=1.5)
     narrate("From the ridge, the hive network spreads below like a wound across the planet.", delay=1.75)
@@ -92,14 +92,14 @@ def scout_ridge(player):
 
     blank()
     narrate("The ridge becomes your staging ground.", delay=1.75)
-    second_choice(player)
+    second_choice(player, state)
 
 
 # ------------------------------------------------------------
 # Second Branch: Primary Objective
 # ------------------------------------------------------------
 
-def second_choice(player):
+def second_choice(player, state):
     blank()
     narrate("The operation continues.", delay=1.25)
     narrate("Across the battlefield, more pods fall from orbit.", delay=1.5)
@@ -115,14 +115,14 @@ def second_choice(player):
     ])
 
     if choice == 1:
-        collapse_hive(player)
+        collapse_hive(player, state)
     elif choice == 2:
-        recover_beacon(player)
+        recover_beacon(player, state)
     elif choice == 3:
-        line_hold(player)
+        line_hold(player, state)
 
 
-def collapse_hive(player):
+def collapse_hive(player, state):
     blank()
     narrate("Charges are planted deep within the hive tunnels.", delay=1.5)
     narrate("For one breath, the whole world seems to hold still.", delay=2)
@@ -134,10 +134,10 @@ def collapse_hive(player):
     narrate("Then the earth splits open with fire.", delay=1.5)
     narrate("The swarm screams beneath the soil.", delay=1.5)
     narrate("The nest network is broken.", delay=2)
-    third_choice(player)
+    third_choice(player, state)
 
 
-def recover_beacon(player):
+def recover_beacon(player, state):
     blank()
     narrate("You recover the lost guild beacon from beneath a mound of chitin and ash.", delay=1.75)
     narrate("Its signal is weak, but alive.", delay=1.5)
@@ -150,10 +150,10 @@ def recover_beacon(player):
     narrate("Names scroll across the cracked display.", delay=1.5)
     narrate("Fallen members. Forgotten patrols. Voices waiting to be carried home.", delay=2)
     narrate("The Sanctum will remember them.", delay=2)
-    third_choice(player)
+    third_choice(player, state)
 
 
-def line_hold(player):
+def line_hold(player, state):
     blank()
     narrate("You hold the line as the swarm crashes against your position.", delay=1.5)
     narrate("Ammunition runs low. Armor cracks. The ground burns.", delay=1.75)
@@ -165,14 +165,14 @@ def line_hold(player):
     narrate("Then the sky opens.", delay=1.5)
     narrate("Reinforcements descend in a storm of fire and steel.", delay=1.75)
     narrate("The line holds.", delay=2)
-    third_choice(player)
+    third_choice(player, state)
 
 
 # ------------------------------------------------------------
 # Third Branch: Secondary Objective
 # ------------------------------------------------------------
 
-def third_choice(player):
+def third_choice(player, state):
     blank()
     computer("[HUD] Mission Success.", delay=0.75)
     narrate("A brief respite settles in.", delay=1.5)
@@ -186,14 +186,14 @@ def third_choice(player):
     ])
 
     if choice == 1:
-        save_seaf(player)
+        save_seaf(player, state)
     elif choice == 2:
-        set_base(player)
+        set_base(player, state)
     elif choice == 3:
-        continue_scout(player)
+        continue_scout(player, state)
 
 
-def save_seaf(player):
+def save_seaf(player, state):
     blank()
     narrate("As the fires around you smolder and begin to die out...", delay=1.5)
     narrate("...distant gunfire echoes across the battlefield.", delay=1.5)
@@ -216,10 +216,10 @@ def save_seaf(player):
     narrate("...one last whisper on your lips: 'The Flame Endures.'", delay=2)
     narrate("You charge forward, sounds of glory echoing in your ears.", delay=2)
 
-    bad_ending(player)
+    bad_ending(player, state)
 
 
-def set_base(player):
+def set_base(player, state):
     blank()
     narrate("Sporadic gunfire and the smell of bug ichor permeate through your mask filters.", delay=1.75)
     narrate("Taking stock of the surroundings, the squad begins setting up landing beacons and shoring up defenses.", delay=2)
@@ -235,10 +235,10 @@ def set_base(player):
     narrate("As the sun filters through the clouds, you see purple and gray colors lifting your heart.", delay=2)
     narrate("Then, just as you are about to hunker down for the night, the ground violently shakes!", delay=2)
 
-    fourth_choice(player)
+    fourth_choice(player, state)
 
 
-def continue_scout(player):
+def continue_scout(player, state):
     blank()
     narrate("Once again, the squad readies up, doing final checks before setting out.", delay=1.5)
     narrate("Picking out a ridge in the distance, you continue your scouting mission.", delay=1.5)
@@ -255,14 +255,14 @@ def continue_scout(player):
     narrate("What you see crawling from inside ties your stomach in knots.", delay=1.75)
     narrate("You begin rushing back to understand what happened.", delay=1.5)
 
-    fourth_choice(player)
+    fourth_choice(player, state)
 
 
 # ------------------------------------------------------------
 # Fourth Branch: Bile Titan Encounter
 # ------------------------------------------------------------
 
-def fourth_choice(player):
+def fourth_choice(player, state):
     blank()
     narrate("As the ground continues to shake, the piercing howl grows even louder.", delay=1.5)
     narrate("Like a creature torn from nightmare, a Bile Titan towers above you!", delay=2)
@@ -281,12 +281,12 @@ def fourth_choice(player):
     ])
 
     if choice == 1:
-        load_mech(player)
+        load_mech(player, state)
     elif choice == 2:
-        run_cover(player)
+        run_cover(player, state)
 
 
-def load_mech(player):
+def load_mech(player, state):
     blank()
     narrate("As you climb in, you feel the energy surge as the mech powers up.", delay=1.5)
     narrate("'Awesome,' you whisper to yourself, then begin configuring the controls.", delay=1.5)
@@ -303,7 +303,7 @@ def load_mech(player):
     thank_you()
 
 
-def run_cover(player):
+def run_cover(player, state):
     blank()
     narrate("After a moment's hesitation, you realize your squadmate is closer than you are to the mech.", delay=1.75)
     narrate("After a quick ping for him to pilot it, you run for the nearest cover.", delay=1.5)
@@ -316,6 +316,9 @@ def run_cover(player):
     narrate("With the beast brought low, you rise and command the countercharge!", delay=1.75)
     narrate("As mop-up operations begin, you finally take a long rest... with one eye open.", delay=2)
 
+    state.set_flag("mission_01_survived")
+    return "survived"
+
     final_words()
     thank_you()
 
@@ -324,17 +327,35 @@ def run_cover(player):
 # Sacrifice Ending Branch
 # ------------------------------------------------------------
 
-def bad_ending(player):
+def bad_ending(player, state):
     blank()
-    narrate("The Codex is often written in the blood of the Sanctum.", delay=2)
+
+    narrate(
+        "The Codex is often written in the blood of the Sanctum.",
+        delay=2
+    )
     narrate("This story is no different.", delay=2)
+
     blank()
 
     class_response(player, "bad_ending")
 
     blank()
-    narrate("Yet just as every ember continues to glow, this sacrifice feeds the flame...", delay=2)
-    narrate("...making it burn just a little brighter.", delay=2)
+
+    narrate(
+        "Yet just as every ember continues to glow, "
+        "this sacrifice feeds the flame...",
+        delay=2
+    )
+    narrate(
+        "...making it burn just a little brighter.",
+        delay=2
+    )
+
+    state.record_death()
+    state.set_flag("mission_01_sacrifice")
+    state.set_flag("currently_deployed", False)
 
     final_words()
-    thank_you()
+
+    return "sacrifice"
